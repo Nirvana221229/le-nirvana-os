@@ -1,0 +1,681 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Nirvana OS - Système Autonome</title>
+
+    <!-- PWA Meta Tags pour iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Le Nirvana OS">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/000000/FFD700?text=Nirvana"> <!-- Icône iOS -->
+
+    <!-- PWA Meta Tags Génériques -->
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://via.placeholder.com/32x32/000000/FFD700?text=N">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://via.placeholder.com/16x16/000000/FFD700?text=N">
+    <!-- Le manifeste PWA serait un fichier séparé (manifest.webmanifest), mais pour la contrainte d'un seul fichier HTML, nous simulerons son contenu ci-dessous en commentaire et via les meta tags. -->
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzaG9ydF9uYW1lIjoiTGUgTmlydmFuYSIsIm5hbWUiOiJMZSBNaXNzaW9uIE5pcmFuYSBPUyIsImRlc2NyaXB0aW9uIjoiU2lzdMOobWUgYXV0b25vbWUgZGUgY3LDqWF0aW9uIGQnYXBwbGljYXRpb25zLiIsInN0YXJ0X3VybCI6Ii4vaW5kZXguaHRtbCIsImJhY2tncm91bmRfY29sb3IiOiIjMDAwMDAwIiwidGhlbWVfY29sb3IiOiIjMDAwMDAwIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly92aWEucGxhY2Vob2xkZXIuY29tLzE5MngxOTAvMDAwMDAwL0ZGRDcwMD90ZXh0PU4iLCJzaXplcyI6IjE5MngxOTAiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiJodHRwczovL3ZpYS5wbGFjZWhvbGRlci5jb20vNTEyeDUxMi8wMDAwMDAvRkZENDcwMD90ZXh0PU4iLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dfQ.eyJzdWJqZWN0IjoibWFuaWZlc3QifQ.1D4H7d7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f7f" />
+
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700&family=Playfair+Display:wght@400;700&display=swap');
+
+        :root {
+            --deep-black: #000000;
+            --brilliant-gold: #FFD700; /* Gold */
+            --light-gold: #FFECB3; /* Lighter shade for highlights */
+            --text-color: #E0E0E0; /* Off-white for general text */
+            --border-color: rgba(255, 215, 0, 0.5); /* Semi-transparent gold for borders */
+            --shadow-color: rgba(255, 215, 0, 0.4); /* Gold shadow for depth */
+            --transition-speed: 0.3s;
+        }
+
+        /* Base Styles */
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--deep-black);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            letter-spacing: 0.05em;
+            background-image: radial-gradient(circle at center, rgba(255, 215, 0, 0.05) 0%, transparent 70%);
+        }
+
+        .container {
+            background-color: var(--deep-black);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 30px var(--shadow-color);
+            border-radius: 15px;
+            padding: 30px;
+            width: 100%;
+            max-width: 900px;
+            margin: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            color: var(--brilliant-gold);
+            text-shadow: 0 0 15px var(--brilliant-gold);
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: var(--brilliant-gold);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tab-button {
+            background-color: var(--deep-black);
+            color: var(--brilliant-gold);
+            border: 1px solid var(--border-color);
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: background-color var(--transition-speed), color var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.2);
+        }
+
+        .tab-button:hover:not(.active) {
+            background-color: rgba(255, 215, 0, 0.1);
+            color: var(--light-gold);
+            box-shadow: 0 0 15px var(--shadow-color);
+        }
+
+        .tab-button.active {
+            background-color: var(--brilliant-gold);
+            color: var(--deep-black);
+            border-color: var(--brilliant-gold);
+            box-shadow: 0 0 20px var(--brilliant-gold);
+        }
+
+        /* Content Sections */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .tab-content h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--brilliant-gold);
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 25px;
+            text-align: center;
+            letter-spacing: 0.1em;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Form Elements */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light-gold);
+            font-weight: 700;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        textarea,
+        select {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin-bottom: 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--text-color);
+            font-size: 1em;
+            box-shadow: inset 0 0 5px rgba(255, 215, 0, 0.1);
+            transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: var(--brilliant-gold);
+            box-shadow: inset 0 0 10px rgba(255, 215, 0, 0.5), 0 0 10px rgba(255, 215, 0, 0.3);
+            outline: none;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background-color: var(--brilliant-gold);
+            color: var(--deep-black);
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 700;
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.6);
+            display: block;
+            width: fit-content;
+            margin: 0 auto;
+        }
+
+        button:hover {
+            background-color: var(--light-gold);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.8);
+            transform: translateY(-2px);
+        }
+
+        /* List Styles */
+        .list-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+            padding-right: 10px; /* For scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: var(--brilliant-gold) var(--deep-black);
+        }
+
+        .list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .list-container::-webkit-scrollbar-track {
+            background: var(--deep-black);
+        }
+
+        .list-container::-webkit-scrollbar-thumb {
+            background-color: var(--brilliant-gold);
+            border-radius: 10px;
+            border: 2px solid var(--deep-black);
+        }
+
+        .list-item {
+            background-color: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .list-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .list-item-info strong {
+            color: var(--brilliant-gold);
+            font-size: 1.1em;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .list-item-info span {
+            display: block;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .list-item-actions button {
+            padding: 8px 15px;
+            font-size: 0.9em;
+            box-shadow: none;
+            width: auto;
+            margin: 0;
+            background-color: var(--light-gold);
+            color: var(--deep-black);
+        }
+
+        .list-item-actions button:hover {
+            background-color: var(--brilliant-gold);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+
+        .generation-output {
+            margin-top: 25px;
+            padding: 15px;
+            border: 1px dashed var(--brilliant-gold);
+            border-radius: 8px;
+            background-color: rgba(255, 215, 0, 0.05);
+            color: var(--light-gold);
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.95em;
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .generation-output.visible {
+            opacity: 1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 10px;
+                gap: 20px;
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .logo {
+                font-size: 2.5em;
+            }
+
+            .tab-button {
+                padding: 10px 20px;
+                font-size: 1em;
+            }
+
+            .tab-content {
+                padding: 15px;
+            }
+
+            .tab-content h2 {
+                font-size: 1.5em;
+            }
+
+            input[type="text"],
+            textarea,
+            select,
+            button {
+                font-size: 0.95em;
+                padding: 10px;
+            }
+
+            .list-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .list-item-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 1.8em;
+                letter-spacing: 0.1em;
+            }
+
+            .logo {
+                font-size: 2.2em;
+            }
+
+            .tabs {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .tab-button {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">✦</div>
+            <h1>Le Nirvana OS</h1>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-button active" data-tab="generate">Générer Application</button>
+            <button class="tab-button" data-tab="api-keys">Clés API</button>
+            <button class="tab-button" data-tab="history">Historique Projets</button>
+        </nav>
+
+        <main class="content">
+            <!-- Section: Générer Application -->
+            <section id="generate" class="tab-content active">
+                <h2>Nouvelle Création</h2>
+                <label for="appName">Nom de l'Application :</label>
+                <input type="text" id="appName" placeholder="Ex: Projet Phoenix, Aura AI">
+
+                <label for="appDesc">Description de l'Application :</label>
+                <textarea id="appDesc" placeholder="Décrivez l'objectif et les fonctionnalités clés..."></textarea>
+
+                <label for="appType">Type d'Application :</label>
+                <select id="appType">
+                    <option value="web">Application Web (SPA/PWA)</option>
+                    <option value="mobile-ios">Application Mobile (iOS Native)</option>
+                    <option value="mobile-android">Application Mobile (Android Native)</option>
+                    <option value="desktop">Application Desktop (Cross-platform)</option>
+                    <option value="ai-model">Modèle d'IA/Service Microservice</option>
+                    <option value="blockchain">Solution Blockchain/DApp</option>
+                </select>
+
+                <button id="generateAppBtn">Lancer la Génération</button>
+
+                <div id="generationOutput" class="generation-output">
+                    <!-- Les résultats de la génération apparaîtront ici -->
+                </div>
+            </section>
+
+            <!-- Section: Gestion des Clés API -->
+            <section id="api-keys" class="tab-content">
+                <h2>Gestion des Clés API</h2>
+
+                <div class="list-container" id="apiKeyList">
+                    <!-- Les clés API seront affichées ici par JS -->
+                </div>
+
+                <h3>Ajouter une Nouvelle Clé</h3>
+                <label for="newApiKeyName">Nom de la Clé :</label>
+                <input type="text" id="newApiKeyName" placeholder="Ex: OpenAI_Dev, Stripe_Prod">
+
+                <label for="newApiKeyValue">Valeur de la Clé :</label>
+                <input type="password" id="newApiKeyValue" placeholder="Entrez la valeur de la clé API">
+
+                <button id="addApiKeyBtn">Ajouter Clé API</button>
+            </section>
+
+            <!-- Section: Historique des Projets -->
+            <section id="history" class="tab-content">
+                <h2>Historique des Projets Générés</h2>
+                <div class="list-container" id="projectHistoryList">
+                    <!-- L'historique des projets sera affiché ici par JS -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // PWA Service Worker Registration (Placeholder for single file context)
+        // Dans une application PWA réelle, le service worker serait dans un fichier `service-worker.js`
+        // à la racine de votre application. Pour cet exercice en un seul fichier HTML,
+        // nous nous limitons à la déclaration et la gestion via les meta tags.
+        // Si vous déployez ceci, créez un fichier `service-worker.js` contenant la logique de cache
+        // et décommenter le code ci-dessous.
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js') // Chemin réel vers le SW
+                    .then(registration => {
+                        console.log('Service Worker enregistré avec succès:', registration);
+                    })
+                    .catch(error => {
+                        console.error('Échec de l\'enregistrement du Service Worker:', error);
+                    });
+            });
+        }
+
+
+        // --- Données Mock ---
+        let apiKeys = [
+            { id: 'ak1', name: 'Nirvana Core API', value: 'NIRVANA-OS-KEY-XXXXXXXXXXXX', created: '2023-01-01', revoked: false },
+            { id: 'ak2', name: 'Cosmos AI Gateway', value: 'COSMOS-AI-KEY-YYYYYYYYYYYY', created: '2023-03-15', revoked: false },
+        ];
+
+        let projectHistory = [
+            { id: 'ph1', name: 'Projet Gaia - Écosystème Connecté', type: 'web', date: '2023-04-20', status: 'Terminé', description: 'Plateforme PWA pour la gestion d\'un réseau d\'objets connectés écologiques.' },
+            { id: 'ph2', name: 'Drone Sentinel - Surveillance Autonome', type: 'mobile-android', date: '2023-05-10', status: 'En cours', description: 'Application Android pour piloter et surveiller une flotte de drones de sécurité.' },
+            { id: 'ph3', name: 'Neural Fabric - Générateur d\'Images', type: 'ai-model', date: '2023-06-01', status: 'Déployé', description: 'Microservice d\'IA capable de générer des images photoréalistes à partir de texte.' },
+        ];
+
+        // --- Fonctions Utilitaires ---
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+        }
+
+        function renderApiKeys() {
+            const listContainer = document.getElementById('apiKeyList');
+            listContainer.innerHTML = '';
+            if (apiKeys.length === 0) {
+                listContainer.innerHTML = '<p style="text-align: center; color: var(--light-gold);">Aucune clé API enregistrée.</p>';
+                return;
+            }
+            apiKeys.forEach(key => {
+                const item = document.createElement('div');
+                item.classList.add('list-item');
+                item.innerHTML = `
+                    <div class="list-item-info">
+                        <strong>${key.name}</strong>
+                        <span>Clé: ${key.value.substring(0, 10)}... (masquée)</span>
+                        <span>Créée le: ${key.created}</span>
+                        <span>Statut: <span style="color: ${key.revoked ? '#FF6347' : '#32CD32'};">${key.revoked ? 'Révoquée' : 'Active'}</span></span>
+                    </div>
+                    <div class="list-item-actions">
+                        <button onclick="toggleApiKeyRevoked('${key.id}')">${key.revoked ? 'Activer' : 'Révoquer'}</button>
+                        <button onclick="deleteApiKey('${key.id}')">Supprimer</button>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        function addApiKey() {
+            const nameInput = document.getElementById('newApiKeyName');
+            const valueInput = document.getElementById('newApiKeyValue');
+            const newName = nameInput.value.trim();
+            const newValue = valueInput.value.trim();
+
+            if (newName && newValue) {
+                const newKey = {
+                    id: 'ak' + Date.now(),
+                    name: newName,
+                    value: newValue,
+                    created: new Date().toISOString().split('T')[0],
+                    revoked: false
+                };
+                apiKeys.push(newKey);
+                renderApiKeys();
+                nameInput.value = '';
+                valueInput.value = '';
+                alert('Clé API ajoutée avec succès !');
+            } else {
+                alert('Veuillez remplir tous les champs pour la clé API.');
+            }
+        }
+
+        function toggleApiKeyRevoked(id) {
+            const keyIndex = apiKeys.findIndex(key => key.id === id);
+            if (keyIndex !== -1) {
+                apiKeys[keyIndex].revoked = !apiKeys[keyIndex].revoked;
+                renderApiKeys();
+                alert(`Clé API "${apiKeys[keyIndex].name}" a été ${apiKeys[keyIndex].revoked ? 'révoquée' : 'activée'}.`);
+            }
+        }
+
+        function deleteApiKey(id) {
+            if (confirm('Êtes-vous sûr de vouloir supprimer cette clé API ?')) {
+                apiKeys = apiKeys.filter(key => key.id !== id);
+                renderApiKeys();
+                alert('Clé API supprimée.');
+            }
+        }
+
+        function renderProjectHistory() {
+            const listContainer = document.getElementById('projectHistoryList');
+            listContainer.innerHTML = '';
+            if (projectHistory.length === 0) {
+                listContainer.innerHTML = '<p style="text-align: center; color: var(--light-gold);">Aucun projet généré pour l\'instant.</p>';
+                return;
+            }
+            projectHistory.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by newest first
+            projectHistory.forEach(project => {
+                const item = document.createElement('div');
+                item.classList.add('list-item');
+                item.innerHTML = `
+                    <div class="list-item-info">
+                        <strong>${project.name} (${project.type})</strong>
+                        <span>Date: ${project.date}</span>
+                        <span>Statut: <span style="color: ${project.status === 'Terminé' ? '#32CD32' : project.status === 'En cours' ? '#FFD700' : '#FF6347'};">${project.status}</span></span>
+                        <span>Description: ${project.description.substring(0, 70)}...</span>
+                    </div>
+                    <div class="list-item-actions">
+                        <button onclick="viewProjectDetails('${project.id}')">Détails</button>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        function viewProjectDetails(id) {
+            const project = projectHistory.find(p => p.id === id);
+            if (project) {
+                alert(`
+                    Détails du Projet :
+                    Nom: ${project.name}
+                    Type: ${project.type}
+                    Date: ${project.date}
+                    Statut: ${project.status}
+                    Description: ${project.description}
+                    `);
+            }
+        }
+
+        function generateApplication() {
+            const appName = document.getElementById('appName').value.trim();
+            const appDesc = document.getElementById('appDesc').value.trim();
+            const appType = document.getElementById('appType').value;
+            const outputDiv = document.getElementById('generationOutput');
+
+            if (!appName || !appDesc) {
+                outputDiv.innerHTML = '<span style="color: #FF6347;">Veuillez renseigner le nom et la description de l\'application.</span>';
+                outputDiv.classList.add('visible');
+                return;
+            }
+
+            outputDiv.innerHTML = `<span style="color: var(--brilliant-gold);">Initiation de la génération pour "${appName}"...</span>`;
+            outputDiv.classList.add('visible');
+
+            // Simulate generation process
+            setTimeout(() => {
+                const newProject = {
+                    id: 'ph' + Date.now(),
+                    name: appName,
+                    type: appType,
+                    date: new Date().toISOString().split('T')[0],
+                    status: 'En cours',
+                    description: appDesc
+                };
+                projectHistory.push(newProject);
+
+                outputDiv.innerHTML = `
+                    <span style="color: var(--light-gold);">Synthèse de l'architecture pour "${appName}" (${appType}).</span><br>
+                    <span style="color: var(--brilliant-gold);">Déploiement des modules.</span><br>
+                    <span style="color: #32CD32;">"${appName}" générée avec succès ! Suivez son avancement dans l'historique des projets.</span>
+                `;
+                document.getElementById('appName').value = '';
+                document.getElementById('appDesc').value = '';
+                document.getElementById('appType').value = 'web'; // Reset select
+                renderProjectHistory(); // Update history tab
+            }, 2000);
+        }
+
+        // --- Initialisation ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Event Listeners for Tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    showTab(button.dataset.tab);
+                });
+            });
+
+            // Event Listener for Generate App Button
+            document.getElementById('generateAppBtn').addEventListener('click', generateApplication);
+
+            // Event Listener for Add API Key Button
+            document.getElementById('addApiKeyBtn').addEventListener('click', addApiKey);
+
+            // Initial render
+            renderApiKeys();
+            renderProjectHistory();
+            showTab('generate'); // Default tab
+        });
+    </script>
+</body>
+</html>
